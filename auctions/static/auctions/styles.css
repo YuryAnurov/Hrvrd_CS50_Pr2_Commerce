@@ -1,0 +1,13 @@
+body {
+    padding: 10px;
+/*
+    background-image: url(https://images4.alphacoders.com/860/thumbbig-86098.webp);
+    background-size: 100%;
+    background-attachment: fixed;
+*/
+    }
+
+#id_long_desc {
+    width: 300px;
+    height: 200px;
+}

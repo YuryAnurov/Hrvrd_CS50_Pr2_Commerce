@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if watchlist == 1 %}
+    <h2>Your Watchlist</h2>
+    {%else%}
+    <h2>Active Listings</h2>
+    {%endif%}
+        <table>
+            {% for listing in listings %}
+            {%if listing.status or watchlist%}            
+            <tr style="border-top: 12px solid transparent; border-bottom: 12px solid transparent;">
+                <td align="center"><img src={{listing.photo}} alt={{listing.title}} height="300"></td>
+                <td style="border-right: 60px solid transparent;"></td>
+                <td>
+                    <a href = "{%url 'listing' listing.id %}">
+                    {% if not listing.status%}
+                    <h4>{{listing.title}} -  closed</h4>
+                    {%else%}
+                    <h4>{{listing.title}}</h4><h6>{{listing.current_price}} $</h6>
+                    {%endif%}
+                    </a>                
+                </td>
+                <td style="border-right: 60px solid transparent;"></td>
+                <td><h6>{{listing.description}}</h6></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </table>
+
+
+
+    
+{% endblock %}

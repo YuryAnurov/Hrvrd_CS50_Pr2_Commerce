@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Categories</h2>
+        <table>
+            {% for category in categories %}
+            <tr style="border-top: 12px solid transparent; border-bottom: 12px solid transparent;">
+                <td style="border-right: 60px solid transparent;"></td>
+                <td>
+                    <a href = "{%url 'catlistings' category.catname %}">
+                        {{category.catname}}
+                    </a>                
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    
+{% endblock %}

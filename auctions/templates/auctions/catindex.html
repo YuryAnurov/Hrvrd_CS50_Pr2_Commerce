@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Category {{catname}} Active Listings</h2>
+        <table>
+            {% for listing in listings %}
+            {%if listing.status or watchlist%}            
+            <tr style="border-top: 12px solid transparent; border-bottom: 12px solid transparent;">
+                <td align="center"><img src={{listing.photo}} alt={{listing.title}} height="300"></td>
+                <td style="border-right: 60px solid transparent;"></td>
+                <td>
+                    <a href = "{%url 'listing' listing.id %}">
+                    <h4>{{listing.title}}</h4><h6>{{listing.current_price}} $</h6>
+                    </a>                
+                </td>
+                <td style="border-right: 60px solid transparent;"></td>
+                <td><h6>{{listing.description}}</h6></td>
+            </tr>
+            {%endif%}
+            {% endfor %}
+        </table>
+
+
+
+    
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if not listing.status %}
+        {%if listing.current_bid.user == request.user %}
+        <h1>Listing {{listing.id}}: {{listing.title}} is closed. You are the winner!</h1>
+        {%else%}
+        <h1>Listing {{listing.id}}: {{listing.title}} is closed. The winner is {{listing.current_bid.user}}</h1>
+        {%endif%}
+    {%else%}
+    <h1>Listing {{listing.id}}: {{listing.title}}</h1>
+    {% endif %}
+        <table>
+            <tr style="border-top: 12px solid transparent; border-bottom: 12px solid transparent;">
+                <td align="center"><img src={{listing.photo}} alt={{listing.title}} height="300"></td>
+                <td style="border-right: 50px solid transparent;"></td>
+                <!-- для td где starting bid было width=150px-->
+                <td><h4>Seller: {{listing.user}}</h4><h4>Current bid: {{listing.current_bid.value}} $</h4>Starting bid: {{listing.starting_bid}} $  created: {{listing.created}}</td>
+                <td style="border-right: 50px solid transparent;"></td>
+                <td><h6>Category: {{listing.category}}</h6><h6>Current bid made by {{listing.current_bid.user}}</h6></td>
+                <td style="border-right: 50px solid transparent;"></td>
+                <td><h6>{{listing.description}}</h6></td>
+            </tr>
+        </table>
+
+{% if user.is_authenticated and listing.status%}
+    <table>
+    <tr style="border-top: 12px solid transparent; border-bottom: 12px solid transparent;">
+    <td style="border-right: 50px solid transparent;"></td>
+    <td>
+        <form action="{%url 'listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="number" name="entry" min={{listing.current_price}} step="0.01">
+            <input type = "submit" value="Place Bid">
+            <textarea rows="1" cols="1" name="list" style="visibility: hidden;">{{listing.id}}</textarea>
+        </form>
+    </td>
+    <td style="border-right: 50px solid transparent;"></td>
+    <td>
+        <form action="{%url 'addwatch'%}" method="post">
+            {%csrf_token %}
+            {% if addwatch %}
+            <input type = "submit" value = "Add to watchlist">
+            {% else %}
+            <input type = "submit" value = "Remove from watchlist">
+            {% endif %}
+            <textarea rows="1" cols="1" name="list" style="visibility: hidden;">{{listing.id}}</textarea>
+        </form>
+    </td>
+    <td style="border-right: 50px solid transparent;"></td>
+    {%if listing.current_bid and listing.user.username == request.user.username%}
+    <td>
+<!--        <form action="{%url 'please'%}" method="post">
+            {%csrf_token %}-->
+            <form action="{%url 'close' listing.id %}" method="get">
+            <input type = "submit" value = "Stop auction">
+            <textarea rows="1" cols="1" name="list" style="visibility: hidden;">{{listing.id}}</textarea>
+        </form>
+    </td>
+    {%endif%}
+    </tr>
+    </table>
+    {%if message%}
+    <h3>{{message}}</h3>
+    {%endif%}
+    
+{% else %}
+
+{% endif %}
+<table>
+<h6>Comments</h6>
+    {% for comment in comments %}    
+    <tr><td>{{comment.user}}:</td></tr>    
+    <tr><td>{{comment.content}}</td></tr>
+    <tr><td><p> </p></td></tr>
+    {% endfor %}
+</table>
+{% if user.is_authenticated %}
+<h6>Leave your comment:</h6>
+<form action="{% url 'comment' %}" method="post">
+    {% csrf_token %}
+    <textarea rows="3" cols="60" name="content"></textarea>
+    <textarea rows="1" cols="1" name="list" style="visibility: hidden;">{{listing.id}}</textarea>
+    <input type = "submit" value="Submit" style="vertical-align: top;">
+</form>
+{% endif %}
+{% endblock %}
+<!--        {% if listing.current_price == listing.starting_bid %} хотел поставить условие по отичию цены от starting_bid, но в html нельзя складывать)
+        {% else %}
+         {% endif %}
+-->
