@@ -16,6 +16,6 @@ urlpatterns = [
     path("please close", views.close, name="please"),
     path("close/<int:listing_id>", views.close, name="close"),
     path("comment", views.comment, name="comment"),
-    path("<int:listing_id>",views.listing, name='listing'),
-#    path("bid", views.bid, name='bid')
+    path("<int:listing_id>", views.listing, name='listing'),
+    # path("bid", views.bid, name='bid')
 ]
